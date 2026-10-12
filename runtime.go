@@ -205,6 +205,7 @@ type Runtime struct {
 	promiseRejectionTracker PromiseRejectionTracker
 	asyncContextTracker     AsyncContextTracker
 	contextValues           map[string]interface{} // Map of context keys to their values
+	baseContext             ct.Context             // parent of the context passed to Go functions
 
 	// Stack for tracking objects currently being converted to string
 	// to detect and handle circular references
@@ -2023,8 +2024,12 @@ func (r *Runtime) wrapReflectFunc(value reflect.Value) func(FunctionCall) Value 
 			// Create a new slice with space for context
 			newIn := make([]reflect.Value, len(in)+1)
 
-			// Start with a base context
-			c := ct.TODO()
+			// Derive from the base context so Go calls are cancelled with
+			// the script that made them instead of outliving it
+			c := r.baseContext
+			if c == nil {
+				c = ct.TODO()
+			}
 
 			// Add all registered context values to the context
 			for key, value := range r.contextValues {
@@ -2164,11 +2169,11 @@ func (r *Runtime) toReflectValue(v Value, dst reflect.Value, ctx *objectExportCt
 			}
 		}
 		if et.Kind() == reflect.String {
-			tme, ok := dateParse(v.String())
+			parsed, ok := dateParse(v.String())
 			if !ok {
 				return fmt.Errorf("could not convert string %v to %v", v, typ)
 			}
-			dst.Set(reflect.ValueOf(tme))
+			dst.Set(reflect.ValueOf(parsed))
 			return nil
 		}
 	}
@@ -3266,6 +3271,13 @@ func (r *Runtime) getPrototypeFromCtor(newTarget, defCtor, defProto *Object) *Ob
 		return obj
 	}
 	return defProto
+}
+
+// SetContext sets the parent of the context passed to Go functions that take
+// one, so cancelling ctx cancels the calls a script has in flight. A nil ctx
+// restores the default, context.TODO().
+func (r *Runtime) SetContext(ctx ct.Context) {
+	r.baseContext = ctx
 }
 
 // SetContextValue sets a value to be included in the context when calling Go functions.
