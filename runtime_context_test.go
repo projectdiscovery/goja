@@ -43,6 +43,7 @@ func TestSetContextNilRestoresDefault(t *testing.T) {
 	ctx, cancel := ct.WithCancel(ct.Background())
 	cancel()
 	r.SetContext(ctx)
+	//lint:ignore SA1012 the test checks nil handling
 	r.SetContext(nil)
 
 	if err := r.Set("check", func(ctx ct.Context) error { return ctx.Err() }); err != nil {
