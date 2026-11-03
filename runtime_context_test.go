@@ -3,6 +3,7 @@ package goja
 import (
 	ct "context"
 	"errors"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -49,5 +50,33 @@ func TestSetContextNilRestoresDefault(t *testing.T) {
 	}
 	if _, err := r.RunString(`check()`); err != nil {
 		t.Fatalf("call got a cancelled context after SetContext(nil): %v", err)
+	}
+}
+
+func TestContextFuncMissingArgs(t *testing.T) {
+	r := New()
+	if err := r.Set("f", func(ctx ct.Context, a string, b int) string {
+		return a + ":" + strconv.Itoa(b)
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if err := r.Set("g", func(ctx ct.Context, a string, rest ...int) string {
+		return a + ":" + strconv.Itoa(len(rest))
+	}); err != nil {
+		t.Fatal(err)
+	}
+	for src, want := range map[string]string{
+		`f("x")`: "x:0",
+		`f()`:    ":0",
+		`g()`:    ":0",
+		`g("y")`: "y:0",
+	} {
+		v, err := r.RunString(src)
+		if err != nil {
+			t.Fatalf("%s: %v", src, err)
+		}
+		if got := v.String(); got != want {
+			t.Fatalf("%s = %q, want %q", src, got, want)
+		}
 	}
 }

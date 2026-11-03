@@ -2010,7 +2010,11 @@ func (r *Runtime) wrapReflectFunc(value reflect.Value) func(FunctionCall) Value 
 			}
 			in = make([]reflect.Value, n)
 			for i := l; i < n; i++ {
-				in[i] = reflect.Zero(typ.In(i))
+				if hasContext {
+					in[i] = reflect.Zero(typ.In(i + 1))
+				} else {
+					in[i] = reflect.Zero(typ.In(i))
+				}
 			}
 		} else {
 			if l > actualNargs && !typ.IsVariadic() {
