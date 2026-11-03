@@ -2118,6 +2118,7 @@ func (r *Runtime) wrapReflectFunc(value reflect.Value) func(FunctionCall) Value 
 
 			// Add all registered context values to the context
 			for key, value := range r.contextValues {
+				//lint:ignore SA1029 embedders read these values with plain string keys
 				c = ct.WithValue(c, key, value)
 			}
 
