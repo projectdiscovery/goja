@@ -513,7 +513,7 @@ func TestGoSliceReflectNil(t *testing.T) {
 	vm := New()
 	t.Run("nil slice", func(t *testing.T) {
 		var a []int
-		if v := vm.ToValue(a); v != _null {
+		if v := vm.ToValue(a); v == _null { // fork: nil maps and slices stay objects (see nil_compat_test.go)
 			t.Fatal(v)
 		}
 	})

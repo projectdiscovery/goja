@@ -2001,9 +2001,6 @@ func (r *Runtime) toValue(i interface{}, origValue reflect.Value) Value {
 
 	switch value.Kind() {
 	case reflect.Map:
-		if value.IsNil() && !value.CanSet() {
-			return _null
-		}
 		if value.Type().NumMethod() == 0 {
 			switch value.Type().Key().Kind() {
 			case reflect.String, reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
@@ -2041,9 +2038,6 @@ func (r *Runtime) toValue(i interface{}, origValue reflect.Value) Value {
 		obj.self = a
 		return obj
 	case reflect.Slice:
-		if value.IsNil() && !value.CanSet() {
-			return _null
-		}
 		obj := &Object{runtime: r}
 		a := &objectGoSliceReflect{
 			objectGoArrayReflect: objectGoArrayReflect{

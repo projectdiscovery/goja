@@ -354,7 +354,7 @@ func TestGoMapReflectNil(t *testing.T) {
 
 	t.Run("nil map", func(t *testing.T) {
 		var m map[string]int
-		if v := vm.ToValue(m); v != _null {
+		if v := vm.ToValue(m); v == _null { // fork: nil maps and slices stay objects (see nil_compat_test.go)
 			t.Fatal(v)
 		}
 	})
