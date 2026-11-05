@@ -14,6 +14,44 @@ func TestRegexp1(t *testing.T) {
 	testScript(SCRIPT, valueTrue, t)
 }
 
+func TestRegexpInvalidUnicodeControlEscapes(t *testing.T) {
+	const SCRIPT = `
+	["u", "iu"].forEach(function (flags) {
+		["", "0", "9", "_", "%", "й"].forEach(function (c) {
+			["\\c" + c, "[\\c" + c + "]"].forEach(function (pattern) {
+				try {
+					new RegExp(pattern, flags);
+				} catch (e) {
+					if (e instanceof SyntaxError) return;
+					throw e;
+				}
+				throw new Error("Expected SyntaxError: " + pattern);
+			});
+		});
+	});
+	/\cA/u.test("\x01") && /[\cz]/iu.test("\x1a");
+	`
+	testScript(SCRIPT, valueTrue, t)
+}
+
+func TestRegexpUnicodePropertyEscapes(t *testing.T) {
+	const SCRIPT = `
+	["\\p{NotAProperty}", "\\p{", "\\p{L", "\\p{}", "[\\P{NotAProperty}]"].forEach(function (pattern) {
+		try {
+			new RegExp(pattern, "u");
+		} catch (e) {
+			if (e instanceof SyntaxError) return;
+			throw e;
+		}
+		throw new Error("Expected SyntaxError: " + pattern);
+	});
+	/^\p{L}$/u.test("a") && /^\p{L}$/u.test("\u{1d49c}") && !/^\p{L}$/u.test("1") && /^\P{L}$/u.test("1") &&
+	/^[\p{L}\p{N}]+$/u.test("café9") && /^\p{Lowercase_Letter}$/u.test("a") &&
+	/^\p{L}$/.test("p{L}") && /^\P$/.test("P");
+	`
+	testScript(SCRIPT, valueTrue, t)
+}
+
 func TestRegexp2(t *testing.T) {
 	const SCRIPT = `
 	var r = new RegExp("(['\"])(.*?)['\"]");
@@ -156,6 +194,32 @@ func TestRegexpSInClass(t *testing.T) {
 	/[\S]/.test("\u2028");
 	`
 	testScript(SCRIPT, valueFalse, t)
+}
+
+func TestRegexpDashAfterClassEscape(t *testing.T) {
+	const SCRIPT = `
+	var toCamelCase = function(s) {
+		return s.replace(/^([A-Z])|[\s-_]+(\w)/g, function(m, p1, p2) {
+			return p2 ? p2.toUpperCase() : p1.toLowerCase();
+		});
+	};
+	toCamelCase("Foo bar-baz_qux");
+	`
+
+	testScript(SCRIPT, asciiString("fooBarBazQux"), t)
+}
+
+func TestRegexpDashNextToClassEscape(t *testing.T) {
+	const SCRIPT = `
+	/^[\s-_]$/.test("-") && /^[\s-_]$/.test("_") && /^[\s-_]$/.test(" ") && !/^[\s-_]$/.test("a") &&
+	/^[_-\s]$/.test("-") && /^[\s-\d]$/.test("-") && /^[\d-_]$/.test("-") &&
+	/^[a-z]$/.test("m") && !/^[a-z]$/.test("-") &&
+	/^[\s\-_]$/.test("-") && /^[\s\-_]$/.test(" ") &&
+	/^[\b-_]$/.test("Z") && !/^[\b-_]$/.test("a") &&
+	/^[\s-_-a]$/.test("a") && !/^[\s-_-a]$/.test("\u0060");
+	`
+
+	testScript(SCRIPT, valueTrue, t)
 }
 
 func TestRegexpDotMatchCR(t *testing.T) {
@@ -698,15 +762,6 @@ func TestRegexpLookbehindAssertion(t *testing.T) {
 	testScriptWithTestLib(SCRIPT, _undefined, t)
 }
 
-func TestRegexpInvalidUTF8(t *testing.T) {
-	vm := New()
-	// Note that normally vm.ToValue() would replace invalid UTF-8 sequences with RuneError
-	_, err := vm.New(vm.Get("RegExp"), asciiString([]byte{0xAD}))
-	if err == nil {
-		t.Fatal("Expected error")
-	}
-}
-
 // this should not cause data races when run with -race
 func TestRegexpConcurrentLiterals(t *testing.T) {
 	prg := MustCompile("test.js", `var r = /(?<!-)\d+/; r.test("");`, false)
@@ -798,12 +853,200 @@ func TestRegExpLastIndex(t *testing.T) {
 	testScriptWithTestLib(SCRIPT, _undefined, t)
 }
 
+func TestRegExpTestCallsExec(t *testing.T) {
+	const SCRIPT = `
+	const test = RegExp.prototype.test;
+
+	let seen;
+	const obj = {
+		exec() {
+			seen = [this, arguments.length, arguments[0]];
+			return {};
+		}
+	};
+	assert.sameValue(test.call(obj, 12), true, "object result");
+	assert.sameValue(seen[0], obj, "this");
+	assert.sameValue(seen[1], 1, "arguments.length");
+	assert.sameValue(seen[2], "12", "argument");
+	assert.sameValue(test.call({exec() { return null; }}, "a"), false, "null result");
+	assert.throws(TypeError, () => test.call({exec() { return 1; }}, "a"), "result is not an object");
+	assert.throws(TypeError, () => test.call({exec: 1}, "a"), "exec is not callable");
+	assert.throws(TypeError, () => test.call({}, "a"), "no exec");
+	assert.throws(TypeError, () => test.call("a", {toString() { throw new Error("ToString called first"); }}), "primitive this");
+
+	let re = /a/;
+	re.exec = () => null;
+	assert.sameValue(re.test("a"), false, "own exec, null result");
+	re = /a/;
+	re.exec = () => ({});
+	assert.sameValue(re.test("z"), true, "own exec, object result");
+	re = /a/;
+	re.exec = 1;
+	assert.sameValue(re.test("a"), true, "own exec is not callable");
+
+	class CustomRegExp extends RegExp {
+		exec() {
+			return null;
+		}
+	}
+	assert.sameValue(new CustomRegExp("a").test("a"), false, "subclass");
+
+	RegExp.prototype.exec = () => null;
+	assert.sameValue(/a/.test("a"), false, "RegExp.prototype.exec replaced");
+	`
+	testScriptWithTestLib(SCRIPT, _undefined, t)
+}
+
+func TestRegExpReplaceSplitExec(t *testing.T) {
+	const SCRIPT = `
+	const replace = RegExp.prototype[Symbol.replace];
+
+	assert.sameValue(replace.call({exec() { return {0: "a", index: 0, length: 1}; }}, "a", "b"), "b", "exec result");
+	assert.throws(TypeError, () => replace.call({}, "a", "b"), "replace, no exec");
+	assert.throws(TypeError, () => replace.call({exec: 1}, "a", "b"), "replace, exec is not callable");
+
+	let re = /a/;
+	re.exec = undefined;
+	assert.sameValue("bab".replace(re, "X"), "bXb", "replace, own exec is undefined");
+	re = /a/;
+	re.exec = 1;
+	assert.sameValue("bab".replace(re, "X"), "bXb", "replace, own exec is not callable");
+
+	re = /a/g;
+	re.exec = undefined;
+	assert.sameValue("bab".replace(re, "X"), "bXb", "global replace, own exec is undefined");
+	assert.sameValue("bab".replaceAll(re, "X"), "bXb", "replaceAll, own exec is undefined");
+	assert(compareArray("bab".match(re), ["a"]), "global match, own exec is undefined");
+	re = /a/;
+	re.exec = 1;
+	assert(compareArray("bab".match(re), ["a"]), "match, own exec is not callable");
+	assert.sameValue("bab".search(re), 1, "search, own exec is not callable");
+
+	const match = RegExp.prototype[Symbol.match];
+	const search = RegExp.prototype[Symbol.search];
+	assert.throws(TypeError, () => match.call({flags: ""}, "a"), "match, no exec");
+	assert.throws(TypeError, () => match.call({flags: "g"}, "a"), "global match, no exec");
+	assert.throws(TypeError, () => search.call({}, "a"), "search, no exec");
+
+	re = /a/;
+	re.constructor = {[Symbol.species]: function() { return {}; }};
+	assert.throws(TypeError, () => "ab".split(re), "split, splitter has no exec");
+	assert.throws(TypeError, () => "".split(re), "split empty string, splitter has no exec");
+
+	class NoExec extends RegExp {
+		constructor(...args) {
+			super(...args);
+			this.exec = undefined;
+		}
+	}
+	assert(compareArray("bab".split(new NoExec("a")), ["b", "b"]), "split, splitter exec is undefined");
+
+	let reads = 0;
+	class CountExec extends RegExp {
+		get exec() {
+			reads++;
+			return RegExp.prototype.exec;
+		}
+	}
+	"bab".split(new CountExec("a"));
+	assert.sameValue(reads, 3, "split, exec is read for each attempt");
+	reads = 0;
+	"bab".match(new CountExec("a", "g"));
+	assert.sameValue(reads, 2, "global match, exec is read for each attempt");
+	reads = 0;
+	"bab".replace(new CountExec("a", "g"), "X");
+	assert.sameValue(reads, 2, "global replace, exec is read for each attempt");
+	`
+	testScriptWithTestLib(SCRIPT, _undefined, t)
+}
+
 func TestRegExpRepeatCount(t *testing.T) {
 	const SCRIPT = `
 	const re = /^0x[0-9a-fA-F]{0,4096}$/;
 	re.test("0xABCD");
 	`
 	testScript(SCRIPT, valueTrue, t)
+}
+
+func TestRegExpEscape(t *testing.T) {
+	const SCRIPT = `
+	const strings = [
+		"a.b*c",
+		"1+1=2",
+		"(foo|bar)[0]{1,2}",
+		"/path/to/file?x=1&y=2#hash",
+		"a b\tc\nd\u00a0e\u2028f\ufeff",
+		"<'\"\x60>,-:;!%@~",
+		"\u00e9\u4e2d\ud83d\ude00",
+		"\ud800x\udc00",
+	];
+	for (const s of strings) {
+		const escaped = RegExp.escape(s);
+		assert(new RegExp("^" + escaped + "$").test(s), JSON.stringify(s));
+		assert(new RegExp("^" + escaped + "$", "u").test(s), JSON.stringify(s) + " (u)");
+		assert(new RegExp("^[" + escaped + "]+$", "u").test(s), JSON.stringify(s) + " (class)");
+	}
+	assert(new RegExp("^\\0" + RegExp.escape("1") + "$").test("\x001"), "after \\0");
+	assert(new RegExp("^(a)\\1" + RegExp.escape("0") + "$").test("aa0"), "after a back reference");
+	`
+	testScriptWithTestLib(SCRIPT, _undefined, t)
+}
+
+func TestRegexp2MatchError(t *testing.T) {
+	// A regexp2 match error (here the backtracking stack limit) must be thrown, not reported as no match.
+	const SCRIPT = `
+	const s = "a".repeat(100000);
+	assert.throws(RangeError, () => /^(?=a)(a)*$/.test(s), "test");
+	assert.throws(RangeError, () => /^(?=a)(a)*$/u.exec(s), "exec (u)");
+	assert.throws(RangeError, () => s.match(/(?=a)(a)*/g), "match (g)");
+	assert.throws(RangeError, () => (s + "\u00e9").match(/(?=a)(a)*/gu), "match (gu)");
+	assert.throws(RangeError, () => ("b" + s).match(/b|(?=a)(a)*/g), "match (g), next match");
+	assert.throws(RangeError, () => ("b" + s + "\u00e9").match(/b|(?=a)(a)*/gu), "match (gu), next match");
+	assert.throws(RangeError, () => s.replace(/(?=a)(a)*/, ""), "replace");
+	assert.throws(RangeError, () => s.split(/(?=a)(a)*/), "split");
+	`
+	testScriptWithTestLib(SCRIPT, _undefined, t)
+}
+
+func TestIssue772(t *testing.T) {
+	const SCRIPT = `
+	assert.sameValue("aaa".replace(/a*/g, "X"), "XX", "replace aaa");
+	assert.sameValue("ab".replace(/a*/g, "X"), "XXbX", "replace ab");
+	assert.sameValue("".replace(/a*/g, "X"), "X", "replace empty");
+	assert.sameValue("a".replace(/a*/g, "X"), "XX", "replace single a");
+
+	assert.sameValue(JSON.stringify("aaa".match(/a*/g)), JSON.stringify(["aaa",""]), "match aaa");
+	assert.sameValue(JSON.stringify("ab".match(/a*/g)), JSON.stringify(["a","",""]), "match ab");
+	assert.sameValue(JSON.stringify("".match(/a*/g)), JSON.stringify([""]), "match empty");
+	assert.sameValue(JSON.stringify("a".match(/a*/g)), JSON.stringify(["a",""]), "match single a");
+
+	assert.sameValue("ab".replaceAll(/a*/g, "X"), "XXbX", "replaceAll ab");
+	assert.sameValue("aaa".replaceAll(/a*/g, "X"), "XX", "replaceAll aaa");
+
+	assert.sameValue("aaa".replace(/(a*)/g, function(m, c) { return "<" + m + ":" + c + ">"; }), "<aaa:aaa><:>", "replace callback aaa");
+	assert.sameValue("ab".replace(/(a*)/g, function(m, c) { return "<" + m + ":" + c + ">"; }), "<a:a><:>b<:>", "replace callback ab");
+
+	assert.sameValue(JSON.stringify("aaa".match(/a*/gy)), JSON.stringify(["aaa",""]), "match sticky aaa");
+	assert.sameValue(JSON.stringify("ab".match(/a*/gy)), JSON.stringify(["a","",""]), "match sticky ab");
+
+	assert.sameValue(JSON.stringify("a\uD834\uDD1E".match(/a*/gu)), JSON.stringify(["a","",""]), "match unicode");
+	assert.sameValue("a\uD834\uDD1E".replace(/a*/gu, "X"), "XX\uD834\uDD1EX", "replace unicode");
+
+	assert.sameValue(JSON.stringify("aaa".match(/(a*)$/g)), JSON.stringify(["aaa",""]), "match end anchor");
+	assert.sameValue(JSON.stringify("aaa".match(/(a*)\b/g)), JSON.stringify(["aaa",""]), "match word boundary");
+	`
+	testScriptWithTestLib(SCRIPT, _undefined, t)
+}
+
+func TestRegexpLegacyOctalEscape(t *testing.T) {
+	const SCRIPT = `
+	assert.sameValue(/\377/.exec("\xff")[0], "\xff");
+	assert.sameValue(/\400/.exec("\x200")[0], "\x200");
+	assert.sameValue(/\777/.exec("\x3f7")[0], "\x3f7");
+	assert.sameValue(/\0377/.exec("\x1f7")[0], "\x1f7");
+	assert.sameValue(/[\400]+/.exec("\x10 0")[0], " 0");
+	`
+	testScriptWithTestLib(SCRIPT, _undefined, t)
 }
 
 func BenchmarkRegexpSplitWithBackRef(b *testing.B) {

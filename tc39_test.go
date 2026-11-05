@@ -34,51 +34,20 @@ var (
 
 		// out-of-date (https://github.com/tc39/test262/issues/3407)
 		"test/language/expressions/prefix-increment/S11.4.4_A6_T3.js":        true,
-		"test/language/expressions/prefix-increment/S11.4.4_A6_T2.js":        true,
-		"test/language/expressions/prefix-increment/S11.4.4_A6_T1.js":        true,
 		"test/language/expressions/prefix-decrement/S11.4.5_A6_T3.js":        true,
-		"test/language/expressions/prefix-decrement/S11.4.5_A6_T2.js":        true,
-		"test/language/expressions/prefix-decrement/S11.4.5_A6_T1.js":        true,
 		"test/language/expressions/postfix-increment/S11.3.1_A6_T3.js":       true,
-		"test/language/expressions/postfix-increment/S11.3.1_A6_T2.js":       true,
-		"test/language/expressions/postfix-increment/S11.3.1_A6_T1.js":       true,
 		"test/language/expressions/postfix-decrement/S11.3.2_A6_T3.js":       true,
-		"test/language/expressions/postfix-decrement/S11.3.2_A6_T2.js":       true,
-		"test/language/expressions/postfix-decrement/S11.3.2_A6_T1.js":       true,
 		"test/language/expressions/compound-assignment/S11.13.2_A7.1_T4.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.1_T2.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.1_T1.js":  true,
 		"test/language/expressions/compound-assignment/S11.13.2_A7.11_T4.js": true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.11_T2.js": true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.11_T1.js": true,
 		"test/language/expressions/compound-assignment/S11.13.2_A7.10_T4.js": true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.10_T2.js": true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.10_T1.js": true,
 		"test/language/expressions/compound-assignment/S11.13.2_A7.9_T4.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.9_T2.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.9_T1.js":  true,
 		"test/language/expressions/compound-assignment/S11.13.2_A7.8_T4.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.8_T2.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.8_T1.js":  true,
 		"test/language/expressions/compound-assignment/S11.13.2_A7.7_T4.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.7_T2.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.7_T1.js":  true,
 		"test/language/expressions/compound-assignment/S11.13.2_A7.6_T4.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.6_T2.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.6_T1.js":  true,
 		"test/language/expressions/compound-assignment/S11.13.2_A7.5_T4.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.5_T2.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.5_T1.js":  true,
 		"test/language/expressions/compound-assignment/S11.13.2_A7.4_T4.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.4_T2.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.4_T1.js":  true,
 		"test/language/expressions/compound-assignment/S11.13.2_A7.3_T4.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.3_T2.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.3_T1.js":  true,
 		"test/language/expressions/compound-assignment/S11.13.2_A7.2_T4.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.2_T2.js":  true,
-		"test/language/expressions/compound-assignment/S11.13.2_A7.2_T1.js":  true,
-		"test/language/expressions/assignment/S11.13.1_A7_T3.js":             true,
 
 		// timezone
 		"test/built-ins/Date/prototype/toISOString/15.9.5.43-0-8.js":  true,
@@ -87,43 +56,6 @@ var (
 
 		// floating point date calculations
 		"test/built-ins/Date/UTC/fp-evaluation-order.js": true,
-
-		// quantifier integer limit in regexp
-		"test/built-ins/RegExp/quantifier-integer-limit.js": true,
-
-		// GetFunctionRealm
-		"test/built-ins/Function/internals/Construct/base-ctor-revoked-proxy.js": true,
-
-		// Uses deprecated __lookupGetter__/__lookupSetter__
-		"test/language/expressions/class/elements/private-getter-is-not-a-own-property.js": true,
-		"test/language/expressions/class/elements/private-setter-is-not-a-own-property.js": true,
-		"test/language/statements/class/elements/private-setter-is-not-a-own-property.js":  true,
-		"test/language/statements/class/elements/private-getter-is-not-a-own-property.js":  true,
-
-		// restricted unicode regexp syntax
-		"test/built-ins/RegExp/unicode_restricted_quantifiable_assertion.js":         true,
-		"test/built-ins/RegExp/unicode_restricted_octal_escape.js":                   true,
-		"test/built-ins/RegExp/unicode_restricted_incomple_quantifier.js":            true,
-		"test/built-ins/RegExp/unicode_restricted_incomplete_quantifier.js":          true,
-		"test/built-ins/RegExp/unicode_restricted_identity_escape_x.js":              true,
-		"test/built-ins/RegExp/unicode_restricted_identity_escape_u.js":              true,
-		"test/built-ins/RegExp/unicode_restricted_identity_escape_c.js":              true,
-		"test/built-ins/RegExp/unicode_restricted_identity_escape_alpha.js":          true,
-		"test/built-ins/RegExp/unicode_restricted_identity_escape.js":                true,
-		"test/built-ins/RegExp/unicode_restricted_brackets.js":                       true,
-		"test/built-ins/RegExp/unicode_restricted_character_class_escape.js":         true,
-		"test/annexB/built-ins/RegExp/prototype/compile/pattern-string-invalid-u.js": true,
-
-		// Because goja parser works in UTF-8 it is not possible to pass strings containing invalid UTF-16 code points.
-		// This is mitigated by escaping them as \uXXXX, however because of this the RegExp source becomes
-		// `\uXXXX` instead of `<the actual UTF-16 code point of XXXX>`.
-		// The resulting RegExp will work exactly the same, but it causes these two tests to fail.
-		"test/annexB/built-ins/RegExp/RegExp-leading-escape-BMP.js":  true,
-		"test/annexB/built-ins/RegExp/RegExp-trailing-escape-BMP.js": true,
-		"test/language/literals/regexp/S7.8.5_A1.4_T2.js":            true,
-		"test/language/literals/regexp/S7.8.5_A1.1_T2.js":            true,
-		"test/language/literals/regexp/S7.8.5_A2.1_T2.js":            true,
-		"test/language/literals/regexp/S7.8.5_A2.4_T2.js":            true,
 
 		// async generator
 		"test/language/expressions/optional-chaining/member-expression.js":                                                                            true,
@@ -159,48 +91,30 @@ var (
 		"test/language/expressions/class/elements/after-same-line-static-gen-rs-static-async-generator-method-privatename-identifier-alt.js":          true,
 		"test/language/expressions/class/elements/after-same-line-gen-rs-static-async-generator-method-privatename-identifier.js":                     true,
 		"test/language/expressions/class/elements/after-same-line-gen-rs-static-async-generator-method-privatename-identifier-alt.js":                 true,
-		"test/built-ins/GeneratorFunction/is-a-constructor.js":                                                                                        true,
-
-		// async iterator
-		"test/language/expressions/optional-chaining/iteration-statement-for-await-of.js": true,
-
-		// legacy number literals
-		"test/language/literals/numeric/non-octal-decimal-integer.js": true,
-		"test/language/literals/string/S7.8.4_A4.3_T2.js":             true,
-		"test/language/literals/string/S7.8.4_A4.3_T1.js":             true,
-
-		// Regexp
-		"test/language/literals/regexp/invalid-range-negative-lookbehind.js":    true,
-		"test/language/literals/regexp/invalid-range-lookbehind.js":             true,
-		"test/language/literals/regexp/invalid-optional-negative-lookbehind.js": true,
-		"test/language/literals/regexp/invalid-optional-lookbehind.js":          true,
-
-		// unicode full case folding
-		"test/built-ins/RegExp/unicode_full_case_folding.js": true,
 
 		// FIXME bugs
 
-		// Left-hand side as a CoverParenthesizedExpression
-		"test/language/expressions/assignment/fn-name-lhs-cover.js": true,
+		// quantifier integer limit in regexp
+		"test/built-ins/RegExp/quantifier-integer-limit.js": true,
 
-		// Character \ missing from character class [\c]
-		"test/annexB/built-ins/RegExp/RegExp-invalid-control-escape-character-class.js": true,
-		"test/annexB/built-ins/RegExp/RegExp-control-escape-russian-letter.js":          true,
+		// restricted Unicode regexp syntax
+		"test/built-ins/RegExp/unicode_restricted_octal_escape.js":                   true, // fixed in regexp2 master
+		"test/built-ins/RegExp/unicode_restricted_incomplete_quantifier.js":          true,
+		"test/built-ins/RegExp/unicode_restricted_identity_escape_alpha.js":          true,
+		"test/built-ins/RegExp/unicode_restricted_identity_escape.js":                true,
+		"test/built-ins/RegExp/unicode_restricted_brackets.js":                       true,
+		"test/annexB/built-ins/RegExp/prototype/compile/pattern-string-invalid-u.js": true,
 
-		"test/built-ins/RegExp/nullable-quantifier.js":               true,
-		"test/built-ins/RegExp/lookahead-quantifier-match-groups.js": true,
-
-		// TypedArray internals
-		"test/built-ins/TypedArrayConstructors/internals/Set/key-is-valid-index-reflect-set.js":                            true,
-		"test/built-ins/TypedArrayConstructors/internals/Set/key-is-out-of-bounds-receiver-is-proto.js":                    true,
-		"test/built-ins/TypedArrayConstructors/internals/Set/key-is-out-of-bounds-receiver-is-not-object.js":               true,
-		"test/built-ins/TypedArrayConstructors/internals/Set/key-is-canonical-invalid-index-prototype-chain-set.js":        true,
-		"test/built-ins/TypedArrayConstructors/internals/Set/key-is-canonical-invalid-index-reflect-set.js":                true,
-		"test/built-ins/TypedArrayConstructors/internals/Set/BigInt/key-is-valid-index-reflect-set.js":                     true,
-		"test/built-ins/TypedArrayConstructors/internals/Set/BigInt/key-is-canonical-invalid-index-prototype-chain-set.js": true,
-		"test/built-ins/TypedArrayConstructors/internals/Set/BigInt/key-is-canonical-invalid-index-reflect-set.js":         true,
-		"test/built-ins/TypedArray/prototype/with/value-throw-completion.js":                                               true,
-		"test/built-ins/TypedArray/prototype/slice/speciesctor-return-same-buffer-with-offset.js":                          true,
+		// Because regexp2 compiler works in UTF-8 it is not possible to pass strings containing lone surrogates.
+		// This is mitigated by escaping them as \uXXXX, however because of this the RegExp source becomes
+		// `\uXXXX` instead of `<the actual UTF-16 code unit of XXXX>`.
+		// The resulting RegExp will work exactly the same, but it causes these tests to fail.
+		"test/annexB/built-ins/RegExp/RegExp-leading-escape-BMP.js":  true,
+		"test/annexB/built-ins/RegExp/RegExp-trailing-escape-BMP.js": true,
+		"test/language/literals/regexp/S7.8.5_A1.4_T2.js":            true,
+		"test/language/literals/regexp/S7.8.5_A1.1_T2.js":            true,
+		"test/language/literals/regexp/S7.8.5_A2.1_T2.js":            true,
+		"test/language/literals/regexp/S7.8.5_A2.4_T2.js":            true,
 
 		// RegExp CharacterClassEscapes
 		"test/built-ins/RegExp/CharacterClassEscapes/character-class-word-class-escape-positive-cases.js":           true,
@@ -216,83 +130,30 @@ var (
 		"test/built-ins/RegExp/CharacterClassEscapes/character-class-digit-class-escape-negative-cases.js":          true,
 		"test/built-ins/RegExp/CharacterClassEscapes/character-class-non-whitespace-class-escape-positive-cases.js": true,
 
-		// JSON (rawJSON, reviver)
-		"test/built-ins/JSON/isRawJSON/not-a-constructor.js":                        true,
-		"test/built-ins/JSON/isRawJSON/length.js":                                   true,
-		"test/built-ins/JSON/isRawJSON/prop-desc.js":                                true,
-		"test/built-ins/JSON/isRawJSON/basic.js":                                    true,
-		"test/built-ins/JSON/isRawJSON/name.js":                                     true,
-		"test/built-ins/JSON/isRawJSON/builtin.js":                                  true,
+		"test/language/literals/regexp/named-groups/invalid-identity-escape-in-capture-u.js": true,
+
+		// JSON (reviver)
+		"test/built-ins/JSON/rawJSON/bigint-raw-json-can-be-stringified.js":         true,
 		"test/built-ins/JSON/parse/reviver-forward-modifies-object.js":              true,
 		"test/built-ins/JSON/parse/reviver-context-source-primitive-literal.js":     true,
 		"test/built-ins/JSON/parse/reviver-context-source-object-literal.js":        true,
 		"test/built-ins/JSON/parse/reviver-context-source-array-literal.js":         true,
 		"test/built-ins/JSON/parse/reviver-call-args-after-forward-modification.js": true,
 
-		// Error.isError
-		"test/built-ins/Error/isError/symbols.js":                                   true,
-		"test/built-ins/Error/isError/primitives.js":                                true,
-		"test/built-ins/Error/isError/prop-desc.js":                                 true,
-		"test/built-ins/Error/isError/name.js":                                      true,
-		"test/built-ins/Error/isError/is-a-constructor.js":                          true,
-		"test/built-ins/Error/isError/fake-errors.js":                               true,
-		"test/built-ins/Error/isError/errors.js":                                    true,
-		"test/built-ins/Error/isError/non-error-objects.js":                         true,
-		"test/built-ins/Error/isError/error-subclass.js":                            true,
-		"test/built-ins/Error/isError/bigints.js":                                   true,
-		"test/built-ins/Error/error-message-tostring-symbol.js":                     true,
-		"test/built-ins/NativeErrors/nativeerror-tostring-message-throws-symbol.js": true,
-
-		// Object, Array, AggregateError
-		"test/built-ins/Object/prototype/setPrototypeOf-with-non-circular-values.js":           true,
-		"test/built-ins/Object/prototype/setPrototypeOf-with-non-circular-values-__proto__.js": true,
-		"test/built-ins/Array/prototype/flat/non-numeric-depth-should-not-throw.js":            true,
-		"test/built-ins/AggregateError/errors-iterabletolist.js":                               true,
-
-		// Language tests (class, with, module, expressions, identifiers)
-		"test/language/statements/class/subclass/private-class-field-on-nonextensible-return-override.js":                                   true,
-		"test/language/statements/class/elements/syntax/valid/grammar-field-named-set-followed-by-generator-asi.js":                         true,
-		"test/language/statements/class/elements/syntax/valid/grammar-field-named-get-followed-by-generator-asi.js":                         true,
-		"test/language/statements/class/elements/private-class-field-on-nonextensible-objects.js":                                           true,
-		"test/language/statements/with/set-mutable-binding-idref-compound-assign-with-proxy-env.js":                                         true,
-		"test/language/statements/with/set-mutable-binding-binding-deleted-with-typed-array-in-proto-chain.js":                              true,
-		"test/language/statements/with/set-mutable-binding-idref-with-proxy-env.js":                                                         true,
-		"test/language/statements/with/get-binding-value-idref-with-proxy-env.js":                                                           true,
-		"test/language/statements/with/get-binding-value-call-with-proxy-env.js":                                                            true,
-		"test/language/statements/with/get-mutable-binding-binding-deleted-in-get-unscopables-strict-mode.js":                               true,
+		// Language tests (module)
 		"test/language/module-code/ambiguous-export-bindings/namespace-unambiguous-if-export-star-as-from-and-import-star-as-and-export.js": true,
 		"test/language/module-code/ambiguous-export-bindings/namespace-unambiguous-if-import-star-as-and-export.js":                         true,
 		"test/language/module-code/top-level-await/pending-async-dep-from-cycle.js":                                                         true,
 		"test/language/module-code/top-level-await/module-graphs-does-not-hang.js":                                                          true,
-		"test/language/expressions/less-than-or-equal/S11.8.3_A4.12_T1.js":                                                                  true,
-		"test/language/expressions/less-than/S11.8.1_A4.12_T1.js":                                                                           true,
-		"test/language/expressions/greater-than-or-equal/S11.8.4_A4.12_T1.js":                                                               true,
-		"test/language/expressions/greater-than/S11.8.2_A4.12_T1.js":                                                                        true,
-
-		// Extended Unicode group names in non-unicode regexp
-		"test/built-ins/RegExp/named-groups/non-unicode-property-names-valid.js": true,
-
-		// \k without groups and Go regex engine
-		"test/annexB/built-ins/RegExp/named-groups/non-unicode-malformed.js": true,
-
-		// Duplicate group name and Go regex engine
-		"test/language/literals/regexp/named-groups/invalid-duplicate-groupspecifier.js":     true,
-		"test/language/literals/regexp/named-groups/invalid-duplicate-groupspecifier-2.js":   true,
-		"test/language/literals/regexp/named-groups/invalid-duplicate-groupspecifier-u.js":   true,
-		"test/language/literals/regexp/named-groups/invalid-duplicate-groupspecifier-2-u.js": true,
-
-		"test/language/literals/regexp/named-groups/invalid-identity-escape-in-capture-u.js": true,
 	}
 
 	featuresBlackList = []string{
 		"async-iteration",
-		"Symbol.asyncIterator",
 		"resizable-arraybuffer",
 		"regexp-duplicate-named-groups",
 		"regexp-unicode-property-escapes",
 		"regexp-match-indices",
 		"regexp-modifiers",
-		"RegExp.escape",
 		"legacy-regexp",
 		"tail-call-optimization",
 		"Temporal",
@@ -304,37 +165,36 @@ var (
 		"Atomics.pause",
 		"FinalizationRegistry",
 		"WeakRef",
-		"__getter__",
-		"__setter__",
 		"ShadowRealm",
 		"SharedArrayBuffer",
 		"decorators",
 		"immutable-arraybuffer",
-		"joint-iteration",
-		"iterator-sequencing",
 
 		"regexp-duplicate-named-groups",
 		"regexp-v-flag",
-		"iterator-helpers",
-		"symbols-as-weakmap-keys",
-		"uint8array-base64",
-		"String.prototype.toWellFormed",
 		"explicit-resource-management",
-		"set-methods",
-		"promise-try",
-		"promise-with-resolvers",
-		"array-grouping",
-		"Math.sumPrecise",
-		"Float16Array",
-		"arraybuffer-transfer",
 		"Array.fromAsync",
-		"String.prototype.isWellFormed",
 
 		"source-phase-imports",
 		"import-attributes",
 		"import-defer",
 	}
+
+	// Path prefixes of tests that are run despite having a blacklisted feature.
+	featuresBlackListExceptions = map[string][]string{
+		// async generators are not supported yet, but for-await-of is
+		"async-iteration": {"test/language/statements/for-await-of/"},
+	}
 )
+
+func isFeatureBlackListException(feature, name string) bool {
+	for _, prefix := range featuresBlackListExceptions[feature] {
+		if strings.HasPrefix(name, prefix) {
+			return true
+		}
+	}
+	return false
+}
 
 func init() {
 	skip := func(prefixes ...string) {
@@ -359,6 +219,9 @@ func init() {
 				skip(
 					"test/language/identifiers/start-unicode-15.1.",
 					"test/language/identifiers/part-unicode-15.1.",
+
+					// simple case folding mappings added in Unicode 15.1
+					"test/built-ins/RegExp/unicode_full_case_folding.js",
 				)
 			}
 		}
@@ -395,24 +258,20 @@ func init() {
 
 		"test/language/eval-code/direct/async-gen-",
 
+		"test/language/statements/for-await-of/async-gen-",
+		"test/language/statements/for-await-of/async-func-dstr-const-async-",
+		"test/language/statements/for-await-of/async-func-dstr-let-async-",
+		"test/language/statements/for-await-of/async-func-dstr-var-async-",
+		"test/language/statements/for-await-of/let-block-with-newline.js",
+		"test/language/statements/for-await-of/let-identifier-with-newline.js",
+
 		// restricted unicode regexp syntax
 		"test/language/literals/regexp/u-",
-
-		// legacy octal escape in strings in strict mode
-		"test/language/literals/string/legacy-octal-",
-		"test/language/literals/string/legacy-non-octal-",
 
 		// modules
 		"test/language/export/",
 		"test/language/import/",
 		"test/language/module-code/",
-
-		// Map getOrInsert*
-		"test/built-ins/WeakMap/prototype/getOrInsert",
-		"test/built-ins/Map/prototype/getOrInsert",
-
-		// rawJSON isn not supported
-		"test/built-ins/JSON/rawJSON",
 	)
 
 }
@@ -673,6 +532,9 @@ func (ctx *tc39TestCtx) runTC39File(name string, t testing.TB) {
 	}
 	if meta.Es5id == "" {
 		for _, feature := range meta.Features {
+			if isFeatureBlackListException(feature, name) {
+				continue
+			}
 			for _, bl := range featuresBlackList {
 				if feature == bl {
 					t.Skip("Blacklisted feature")
@@ -837,12 +699,32 @@ func TestTC39(t *testing.T) {
 		//ctx.runTC39File("test/language/types/number/8.5.1.js", t)
 		ctx.runTC39Tests("test/language")
 		ctx.runTC39Tests("test/built-ins")
+		ctx.runTC39Tests("test/annexB/built-ins/Date")
+		ctx.runTC39Tests("test/annexB/built-ins/Function")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/anchor")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/big")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/blink")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/bold")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/fixed")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/fontcolor")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/fontsize")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/italics")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/link")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/small")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/strike")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/sub")
 		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/substr")
+		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/sup")
 		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/trimLeft")
 		ctx.runTC39Tests("test/annexB/built-ins/String/prototype/trimRight")
 		ctx.runTC39Tests("test/annexB/built-ins/escape")
 		ctx.runTC39Tests("test/annexB/built-ins/unescape")
 		ctx.runTC39Tests("test/annexB/built-ins/RegExp")
+		ctx.runTC39Tests("test/annexB/language/comments")
+		ctx.runTC39Tests("test/annexB/language/literals")
+		ctx.runTC39Tests("test/annexB/language/statements/for-in")
+		ctx.runTC39Tests("test/annexB/language/statements/labeled")
+		ctx.runTC39Tests("test/annexB/language/statements/try")
 
 		ctx.flush()
 	})
